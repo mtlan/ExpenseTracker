@@ -7,11 +7,21 @@ import {
   Text,
   TouchableRipple,
 } from 'react-native-paper';
-
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import Fire from '../config/Fire';
 
-const ProfileScreen = () => {
-  return (
+export default class ProfileScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = ({
+      currentUID: Fire.auth().currentUser.uid,
+    })
+  }
+  // var currentUser = Fire.auth().currentUser
+  render() {
+    var currentUser = Fire.auth().currentUser;
+    console.log(currentUser);
+    return (
     <SafeAreaView style={styles.container}>
       <View style={styles.userInfoSection}>
         <View style={{flexDirection: 'row', marginTop: 15}}>
@@ -21,7 +31,7 @@ const ProfileScreen = () => {
           />
           <View style={{marginLeft: 20}}>
             <Title style={[styles.title, {marginTop: 15, marginTop: 5}]}>
-              Truc Lan
+            {currentUser.displayName}
             </Title>
             <Caption style={styles.caption}>Hello</Caption>
           </View>
@@ -96,10 +106,11 @@ const ProfileScreen = () => {
         </View>
       </ScrollView>
     </SafeAreaView>
-  );
+    )
+  }
 };
 
-export default ProfileScreen;
+
 
 const styles = StyleSheet.create({
   container: {

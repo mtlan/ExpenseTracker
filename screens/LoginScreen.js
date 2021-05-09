@@ -7,53 +7,29 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import {firebase} from '../firebase';
-
+import Fire from '../config/Fire';
 
 export default class LoginScreen extends Component {
   constructor(props) {
     super(props);
-    this.validateInput = React.createRef();
+    this.state = ({
+      email:'',
+      password:'',
+      errorMessage: null
+    })
   }
 
-  state = {
-    username: '',
-    password: '',
-    errMsg: '',
-  };
-  onLogin = async () => {
-    let result = await firebase
-      .auth()
-      .signInWithEmailAndPassword(this.state.username, this.state.password)
-      .catch(function (error) {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-
-        this.validateInput.current.shake(800);
-        this.setState({errMsg: 'Invalid login details. Try again!'});
-      })
-      .catch((error) => {
-        console.log(error)
-        return false
-      })
-
-    if (result) {
-      this.props.navigation.navigate('Main');
-    } else {
-      this.validateInput.current.shake(800);
-      this.setState({errMsg: 'Invalid login details. Try again!'});
+  onLogin = (email, password) => {
+    try {
+      Fire.auth().signInWithEmailAndPassword(email, password)
+      .then(() => this.props.navigation.navigate('Main'))
+      .then(function (user) {
+        console.log(user);
+      });
+    } catch (error) {
+      console.log(error.toString());
     }
-
-    console.log('This is login result', result);
-
-    // if (this.state.username == '1' && this.state.password == '1') {
-    //   this.props.navigation.navigate('Main');
-    // } else {
-    //   // alert('Error')
-    //   this.validateInput.current.shake(800);
-    //   this.setState({errMsg: 'Invalid login details. Try again!'});
-    // }
-  };
+  }
   render() {
     return (
       <View style={styles.container}>
@@ -72,9 +48,8 @@ export default class LoginScreen extends Component {
             }}
             placeholder="Username"
             keyboardType="email-address"
-            onChangeText={text => {
-              this.setState({errMsg: ''}), this.setState({username: text});
-            }}
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
           />
 
           <TextInput
@@ -86,9 +61,8 @@ export default class LoginScreen extends Component {
             }}
             placeholder="Password"
             secureTextEntry={true}
-            onChangeText={text => {
-              this.setState({errMsg: ''}), this.setState({password: text});
-            }}
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
           />
           <Text style={{color: 'red', textAlign: 'center', marginTop: 10}}>
             {this.state.errMsg}
@@ -102,7 +76,7 @@ export default class LoginScreen extends Component {
             marginTop: 40,
           }}>
           <TouchableOpacity
-            onPress={() => this.onLogin()}
+            onPress={() => this.onLogin(this.state.email,this.state.password)}
             style={{
               width: 200,
               backgroundColor: '#0d47a1',

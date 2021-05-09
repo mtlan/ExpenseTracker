@@ -7,21 +7,36 @@ import {
   TouchableOpacity,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+import Fire from '../config/Fire';
 
 export default class SignUpScreen extends Component {
   constructor(props) {
     super(props);
     this.validateInput = React.createRef();
+    this.state = {
+      username: "",
+      email: "",
+      password: "",
+      errMsg: "",
+    };
   }
-
-  state = {
-    errMsg: "",
+  onSignUp = (email, password) => {
+    try {
+      Fire
+        .auth()
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => this.props.navigation.navigate("Main"))
+        .then((user) => {
+          var currentUser = Fire.auth().currentUser;
+          currentUser.updateProfile({
+            displayName: this.state.username,
+          });
+        });
+    } catch (error) {
+      // console.log(error.toString());
+      this.setState({errMsg: error.message})
+    }
   };
-  onSignUp() {
-      // alert('Error')
-    this.validateInput.current.shake(800);
-    this.setState({ errMsg: "Invalid details. Try again!" });
-  }
   render() {
     return (
       <View style={styles.container}>
@@ -36,9 +51,8 @@ export default class SignUpScreen extends Component {
               paddingBottom: 10,
             }}
             placeholder="Username"
-            onChangeText={(text) => {
-              this.setState({ errMsg: "" });
-            }}
+            onChangeText={(username) => this.setState({ username })}
+            value={this.state.username}
           />
 
           <TextInput
@@ -49,9 +63,9 @@ export default class SignUpScreen extends Component {
               paddingBottom: 10,
             }}
             placeholder="Email"
-            onChangeText={(text) => {
-              this.setState({ errMsg: "" });
-            }}
+            keyboardType="email-address"
+            onChangeText={(email) => this.setState({ email })}
+            value={this.state.email}
           />
 
           <TextInput
@@ -63,11 +77,10 @@ export default class SignUpScreen extends Component {
             }}
             placeholder="Password"
             secureTextEntry={true}
-            onChangeText={(text) => {
-              this.setState({ errMsg: "" });
-            }}
+            onChangeText={(password) => this.setState({ password })}
+            value={this.state.password}
           />
-          <TextInput
+          {/* <TextInput
             style={{
               marginTop: 20,
               borderBottomColor: "#ddd",
@@ -79,7 +92,7 @@ export default class SignUpScreen extends Component {
             onChangeText={(text) => {
               this.setState({ errMsg: "" });
             }}
-          />
+          /> */}
           <Text style={{ color: "red", textAlign: "center", marginTop: 10 }}>
             {this.state.errMsg}
           </Text>
@@ -93,7 +106,7 @@ export default class SignUpScreen extends Component {
           }}
         >
           <TouchableOpacity
-            onPress={() => this.onSignUp()}
+            onPress={() => this.onSignUp(this.state.email, this.state.password)}
             style={{
               width: 200,
               backgroundColor: "#0d47a1",

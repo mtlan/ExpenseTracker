@@ -10,7 +10,7 @@ import {
   Picker,
 } from 'react-native';
 import Fire from '../config/Fire';
-import Transaction from '../screens/Transaction';
+import Transaction from '../components/Transaction';
 
 export default class AddItems extends React.Component {
   static navigationOptions = {
@@ -67,6 +67,7 @@ export default class AddItems extends React.Component {
                 ? money + parseFloat(price)
                 : money - parseFloat(price),
             transactionName: '',
+            Note: '',
             transactionType: '',
             price: '',
             Note: '',
@@ -95,6 +96,7 @@ export default class AddItems extends React.Component {
             id: childSnapshot.val().id,
             name: childSnapshot.val().name,
             type: childSnapshot.val().type,
+            note: childSnapshot.val().note,
             price: childSnapshot.val().price,
             user_id: childSnapshot.val().user_id,
           });
@@ -106,7 +108,6 @@ export default class AddItems extends React.Component {
       });
   }
   render() {
-    const {selectedItems} = this.state;
     const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
@@ -147,7 +148,7 @@ export default class AddItems extends React.Component {
               />
             </TouchableOpacity>
           </View>
-
+              <Text style={{marginLeft:20}}>{this.state.money}</Text>
           <View style={{flexDirection: 'row', padding: 30}}>
             <View
               style={{
@@ -357,7 +358,7 @@ export default class AddItems extends React.Component {
               }}></View>
       
             <View style={{width: '100%', height: '30%'}}>
-              <ScrollView>
+              <ScrollView contentContainerStyle={{paddingBottom: 60}}>
                 {Object.keys(this.state.transactions).map(id => (
                   <Transaction
                     key={id}
@@ -366,70 +367,6 @@ export default class AddItems extends React.Component {
                     price={this.state.transactions[id].price}
                   />
                 ))}
-
-                <View
-                  style={{
-                    borderBottomWidth: 2,
-                    width: '90%',
-                    opacity: 0.3,
-                    marginLeft: 20,
-                    marginTop: 15,
-                  }}></View>
-                {/* <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginHorizontal: 30,
-                    paddingTop: 10,
-                  }}
-                >
-                  <View style={{ flexDirection: "row", alignItems: "center" }}>
-                    <View
-                      style={{
-                        height: 35,
-                        width: 35,
-                        borderRadius: 100,
-                        backgroundColor: "#00192d",
-                        alignItems: "center",
-                        justifyContent: "center",
-                      }}
-                    >
-                      <Image
-                        resizeMode="contain"
-                        style={{ height: 20, width: 20 }}
-                        source={require("../assets/images/food.png")}
-                      />
-                    </View>
-                    <Text
-                      style={{
-                        fontSize: 15,
-                        fontWeight: "bold",
-                        marginLeft: 10,
-                      }}
-                    >
-                      Food & Drinks
-                    </Text>
-                  </View>
-                  <Text
-                    style={{
-                      fontSize: 15,
-                      fontWeight: "bold",
-                      color: "#e76f51",
-                    }}
-                  >
-                    -26,00
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    borderBottomWidth: 2,
-                    width: "90%",
-                    opacity: 0.3,
-                    marginLeft: 20,
-                    marginTop: 15,
-                  }}
-                ></View> */}
               </ScrollView>
             </View>
           </View>

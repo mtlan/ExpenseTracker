@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator
 } from 'react-native';
 import HomeTransaction from '../components/HomeTransaction';
 import Fire from '../config/Fire';
@@ -54,10 +55,11 @@ export default class Home extends React.Component {
             user_id: childSnapshot.val().user_id,
           });
         });
-
         this.setState({
           transactions: BackUpState,
+          money: totalMoney,
         });
+        console.log(totalMoney)
       });
   }
   render() {
@@ -166,10 +168,10 @@ export default class Home extends React.Component {
               marginHorizontal: 30,
             }}>
             <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-              14th April 2020
+              14th April 2021
             </Text>
             <Text style={{fontSize: 15, fontWeight: 'bold', color: '#e76f51'}}>
-              270
+              {this.state.money}
             </Text>
           </View>
           <View

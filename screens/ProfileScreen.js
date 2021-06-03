@@ -14,8 +14,29 @@ export default class ProfileScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = ({
+      money: 0,
+      price: '',
       currentUID: Fire.auth().currentUser.uid,
     })
+  }
+  componentDidMount() {
+    const {currentUID, money} = this.state;
+    let totalMoney = money;
+    Fire.database()
+      .ref('Transactions/' + currentUID)
+      .once('value', snapshot => {
+        //   console.log(snapshot);
+        snapshot.forEach(childSnapshot => {
+          totalMoney =
+            childSnapshot.val().type === 'deposit'
+              ? parseFloat(childSnapshot.val().price) + totalMoney
+              : totalMoney - parseFloat(childSnapshot.val().price);
+        });
+        this.setState({
+          money: totalMoney,
+        });
+        console.log(totalMoney)
+      });
   }
   // var currentUser = Fire.auth().currentUser
   render() {
@@ -63,7 +84,7 @@ export default class ProfileScreen extends React.Component {
             styles.infoBox,
             {borderRightColor: '#dddddd', borderRightWidth: 1},
           ]}>
-          <Title>$140</Title>
+          <Title>${this.state.money}</Title>
           <Caption>Wallet</Caption>
         </View>
         <View style={styles.infoBox}>

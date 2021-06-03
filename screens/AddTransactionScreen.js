@@ -148,7 +148,7 @@ export default class AddItems extends React.Component {
               />
             </TouchableOpacity>
           </View>
-              <Text style={{marginLeft:20}}>{this.state.money}</Text>
+              {/* <Text style={{marginLeft:20}}>{this.state.money}</Text> */}
           <View style={{flexDirection: 'row', padding: 30}}>
             <View
               style={{

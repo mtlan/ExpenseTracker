@@ -185,7 +185,7 @@ export default class Home extends React.Component {
             }}></View>
 
           <View style={{width: '100%', height: '30%'}}>
-            <ScrollView contentContainerStyle={{paddingBottom: 60}}>
+            <ScrollView contentContainerStyle={{paddingBottom: 150}}>
               {Object.keys(this.state.transactions).map(id => (
                 // <HomeTransaction
                 //   key={id}

@@ -13,37 +13,20 @@ import Fire from '../config/Fire';
 export default class check extends Component {
   constructor(props) {
     super(props);
-    const {P1, P2, P3, P4} = this.props.route.params;
+    // const {P1, P2, P3, P4} = this.props.route.params;
     this.state = {
       transactions: [],
-      money: 0,
+      // money: 0,
       transactionName: this.props.route.params.P2,
-      transactionType: '',
-      price: '',
-      Note: '',
+      transactionType: this.props.route.params.P3,
+      price: this.props.route.params.P1,
+      Note: this.props.route.params.P4,
       currentUID: Fire.auth().currentUser.uid,
     };
     
   }
   updateTransaction = () => {
-    const {
-      transactionName,
-      price,
-      money,
-      currentUID,
-      Note,
-      transactionType,
-    } = this.state;
-    if ((transactionName, price, Note, transactionType)) {
-      Fire.database()
-        .ref('Transactions/' + currentUID)
-        .update({
-          transactionName: this.props.route.params.P2,
-        })
-        .catch(error => {
-          console.log('error', error);
-        });
-    }
+    
   };
   render() {
     const {navigate} = this.props.navigation;
@@ -70,6 +53,8 @@ export default class check extends Component {
             </Text>
           </View>
           <TextInput
+            onChangeText={price => this.setState({price})}
+            value={this.state.price}
             placeholder="amount spent"
             keyboardType="numeric"
             style={{
@@ -153,11 +138,20 @@ export default class check extends Component {
             </View>
             <View>
               <Picker
+                onChangeText={transactionType =>
+                  this.setState({transactionType})
+                }
                 style={{paddingLeft: 200, marginLeft: 20, width: 240}}
                 itemStyle={{
                   height: 50,
                   transform: [{scaleX: 1}, {scaleY: 1}],
-                }}>
+                }}
+                selectedValue={this.state.transactionType}
+                onValueChange={(itemValor, itemindex) =>
+                  this.setState({
+                    transactionType: itemValor,
+                  })
+                }>
                 <Picker.Item label="Select" value="" />
                 <Picker.Item label="Expense" value="expense" />
                 <Picker.Item label="Deposit" value="deposit" />
@@ -200,6 +194,8 @@ export default class check extends Component {
             </View>
             <View>
               <TextInput
+                onChangeText={Note => this.setState({Note})}
+                value={this.state.Note}
                 placeholder="Note"
                 style={{
                   width: 270,

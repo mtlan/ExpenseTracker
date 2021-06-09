@@ -8,6 +8,7 @@ import {
   ScrollView,
   ActivityIndicator
 } from 'react-native';
+import {TouchableRipple} from 'react-native-paper';
 import HomeTransaction from '../components/HomeTransaction';
 import Fire from '../config/Fire';
 
@@ -186,12 +187,77 @@ export default class Home extends React.Component {
           <View style={{width: '100%', height: '30%'}}>
             <ScrollView contentContainerStyle={{paddingBottom: 60}}>
               {Object.keys(this.state.transactions).map(id => (
-                <HomeTransaction
-                  key={id}
-                  type={this.state.transactions[id].type}
-                  name={this.state.transactions[id].name}
-                  price={this.state.transactions[id].price}
-                />
+                // <HomeTransaction
+                //   key={id}
+                //   type={this.state.transactions[id].type}
+                //   name={this.state.transactions[id].name}
+                //   price={this.state.transactions[id].price}
+                // />
+                <TouchableRipple
+                  onPress={() =>
+                    this.props.navigation.navigate('Edit', {
+                      P1: this.state.transactions[id].price,
+                      P2: this.state.transactions[id].name,
+                      P3: this.state.transactions[id].type,
+                      P4: this.state.transactions[id].note,
+                    })
+                  }>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginHorizontal: 30,
+                      paddingTop: 30,
+                    }}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                      <View
+                        style={{
+                          height: 45,
+                          width: 45,
+                          borderRadius: 100,
+                          backgroundColor: '#00192d',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Image
+                          resizeMode="contain"
+                          style={{height: 25, width: 25}}
+                          source={require('../assets/images/electricity.png')}
+                        />
+                      </View>
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          fontWeight: 'bold',
+                          marginLeft: 10,
+                        }}>
+                        {this.state.transactions[id].name}
+                      </Text>
+                    </View>
+                    <Text>
+                      {this.state.transactions[id].type === 'deposit' ? (
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: 'bold',
+                            color: 'green',
+                          }}>
+                          +{this.state.transactions[id].price}
+                        </Text>
+                      ) : (
+                        <Text
+                          style={{
+                            fontSize: 15,
+                            fontWeight: 'bold',
+                            color: '#e76f51',
+                          }}>
+                          -{this.state.transactions[id].price}
+                        </Text>
+                      )}
+                    </Text>
+                  </View>
+                </TouchableRipple>
               ))}
               {/* first Item */}
             </ScrollView>

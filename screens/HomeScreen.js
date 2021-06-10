@@ -6,7 +6,8 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
 import {TouchableRipple} from 'react-native-paper';
 import HomeTransaction from '../components/HomeTransaction';
@@ -260,8 +261,8 @@ export default class Home extends React.Component {
                   </View>
                 </TouchableRipple>
               ))}
-              {/* first Item */}
-            </ScrollView>
+              {/* {/* first Item */}
+            </ScrollView> 
           </View>
         </View>
       </View>

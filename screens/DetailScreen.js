@@ -26,6 +26,8 @@ export default class check extends Component {
     };
     // console.log(currentUID)
   }
+  // error không update và delete vì ko trỏ trúng vào đường dẫn
+
   updateTransaction = () => {
     const {
       id,
@@ -38,9 +40,44 @@ export default class check extends Component {
     } = this.state;
     if ((transactionName, price, Note, transactionType)) {
     const BackUpState = this.state.transactions;
+    var newPostkey = Fire.database().ref('Transactions' + currentUID).child(id);
+    console.log(newPostkey);
+    Fire.database()
+        .ref('Transactions/' + currentUID).child(id)
+        .update({
+          name: transactionName,
+          type: transactionType,
+          price: price,
+          note: Note,
+          user_id: currentUID,
+        })
+    // Fire.database()
+    //     .ref('Transactions/' + currentUID).child(id)
+    //     .remove()
+    }
+    this.setState({
+      transactionName: '',
+      Note: '',
+      transactionType: '',
+      price: '',
+      Note: '',
+    })
+  };
+  deleteTransaction = () => {
+    const {
+      id,
+      transactionName,
+      price,
+      // money,
+      currentUID,
+      Note,
+      transactionType,
+    } = this.state;
+    if ((transactionName, price, Note, transactionType)) {
+    const BackUpState = this.state.transactions;
     // error không update và delete vì ko trỏ trúng vào đường dẫn
-    // var newPostkey = Fire.database().ref('Transactions' + currentUID).child('value');
-    // console.log(newPostkey);
+    var newPostkey = Fire.database().ref('Transactions' + currentUID).child(id);
+    console.log(newPostkey);
     // Fire.database()
     //     .ref('Transactions/' + currentUID).child(id)
     //     .update({
@@ -62,6 +99,9 @@ export default class check extends Component {
       Note: '',
     })
   };
+
+  // error không update và delete vì ko trỏ trúng vào đường dẫn
+
   render() {
     const {navigate} = this.props.navigation;
     // const {P1, P2, P3, P4} = this.props.route.params;
@@ -260,6 +300,24 @@ export default class check extends Component {
           }}>
           <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>
             Update
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            this.deleteTransaction(this.props.navigation.navigate('Home'))
+          }
+          style={{
+            width: 200,
+            backgroundColor: 'red',
+            padding: 10,
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderRadius: 40,
+            marginTop: 50,
+            marginLeft: 80,
+          }}>
+          <Text style={{color: '#fff', fontSize: 16, textAlign: 'center'}}>
+            Delete
           </Text>
         </TouchableOpacity>
       </View>

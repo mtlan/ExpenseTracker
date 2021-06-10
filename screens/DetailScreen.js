@@ -22,11 +22,45 @@ export default class check extends Component {
       price: this.props.route.params.P1,
       Note: this.props.route.params.P4,
       currentUID: Fire.auth().currentUser.uid,
+      id: this.props.route.params.P0
     };
-    
+    // console.log(currentUID)
   }
   updateTransaction = () => {
-    
+    const {
+      id,
+      transactionName,
+      price,
+      // money,
+      currentUID,
+      Note,
+      transactionType,
+    } = this.state;
+    if ((transactionName, price, Note, transactionType)) {
+    const BackUpState = this.state.transactions;
+    // error không update và delete vì ko trỏ trúng vào đường dẫn
+    // var newPostkey = Fire.database().ref('Transactions' + currentUID).child('value');
+    // console.log(newPostkey);
+    // Fire.database()
+    //     .ref('Transactions/' + currentUID).child(id)
+    //     .update({
+    //       name: transactionName,
+    //       type: transactionType,
+    //       price: price,
+    //       note: Note,
+    //       user_id: currentUID,
+    //     })
+    Fire.database()
+        .ref('Transactions/' + currentUID).child(id)
+        .remove()
+    }
+    this.setState({
+      transactionName: '',
+      Note: '',
+      transactionType: '',
+      price: '',
+      Note: '',
+    })
   };
   render() {
     const {navigate} = this.props.navigation;

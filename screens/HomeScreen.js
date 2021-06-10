@@ -196,6 +196,7 @@ export default class Home extends React.Component {
                 <TouchableRipple
                   onPress={() =>
                     this.props.navigation.navigate('Edit', {
+                      P0: this.state.transactions[id].id,
                       P1: this.state.transactions[id].price,
                       P2: this.state.transactions[id].name,
                       P3: this.state.transactions[id].type,
